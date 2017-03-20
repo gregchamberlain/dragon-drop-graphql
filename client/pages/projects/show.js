@@ -5,10 +5,11 @@ import gql from 'graphql-tag';
 
 import ToolbarLayout, { Toolbar, Content } from '../../components/toolbar';
 import SidebarLayout, { Sidebar } from '../../components/sidebar';
+import LoadingPage from '../../components/LoadingPage';
 import PageForm from '../pages/Form';
 import LayoutEditor from '../../components/LayoutEditor';
 
-const Project = ({ match, data }) => data.loading ? <h1>Loading Project...</h1> : (
+const Project = ({ match, data }) => data.loading ? <LoadingPage /> : (
   <ToolbarLayout>
     <Toolbar />
     <Content>

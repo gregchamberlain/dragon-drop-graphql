@@ -11,22 +11,21 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "build": "webpack --config utils/webpack.config.prod.js --progress --colors"
+    "build": "webpack --config utils/webpack.config.prod.js --progress --colors",
+    "deploy": "yarn build && gcloud app deploy"
   },
   "dependencies": {
     "@google-cloud/datastore": "^0.7.1",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
-    "cors": "^2.8.1",
-    "css-loader": "^0.27.3",
     "express": "4.14.1",
     "graphql": "^0.9.1",
     "graphql-server-express": "^0.6.0",
     "graphql-tools": "^0.10.1",
-    "graphql-type-json": "^0.1.4",
-    "style-loader": "^0.14.1"
+    "graphql-type-json": "^0.1.4"
   },
   "devDependencies": {
+    "cors": "^2.8.1",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
     "babel-preset-es2015": "^6.24.0",
@@ -38,6 +37,8 @@
     "react-hot-loader": "next",
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.10.1",
-    "webpack-hot-middleware": "^2.17.1"
+    "webpack-hot-middleware": "^2.17.1",
+    "css-loader": "^0.27.3",
+    "style-loader": "^0.14.1"
   }
 }

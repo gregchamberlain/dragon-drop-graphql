@@ -34,18 +34,4 @@ const Sidebar = ({ match, pages }) => (
   </div>
 );
 
-const query = gql`query Project($id: String!) {
-  project(id: $id) {
-    id
-    name
-    pages {
-      id
-      title
-      path
-      items
-    }
-  }
-}
-`;
-
 export default withRouter(Sidebar);

@@ -4,8 +4,9 @@ import gql from 'graphql-tag';
 import update from 'immutability-helper';
 
 import LayoutEditor from './LayoutEditor';
+import LoadingPage from '../LoadingPage';
 
-const Editor = ({ data, updatePage }) => data.loading ? <h1>Loading Page...</h1> : (
+const Editor = ({ data, updatePage }) => data.loading ? <LoadingPage /> : (
   <LayoutEditor items={data.page.items} update={updatePage} />
 );
 

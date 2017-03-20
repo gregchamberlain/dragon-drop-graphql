@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const Projects = ({ data }) => data.loading ? <h1>Loading...</h1> : (
+import LoadingPage from '../../components/LoadingPage';
+
+const Projects = ({ data }) => data.loading ? <LoadingPage /> : (
   <div style={{ display: 'flex' }}>
     {data.projects.map(project => (
       <Link to={`/projects/${project.id}`} key={project.id} style={{ padding: 20, border: '1px solid #444', margin: 10 }}>

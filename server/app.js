@@ -5,7 +5,6 @@ const graphqlExpress = require('graphql-server-express').graphqlExpress;
 const bodyParser = require('body-parser');
 
 const schema = require('./data');
-const devServer = require('./utils/devServer');
 
 const app = express();
 
@@ -16,6 +15,7 @@ app.get('/', function(req, res) {
 if (process.env.NODE_ENV === 'production') {
   app.use('/static', express.static(path.join(__dirname, 'static')));
 } else {
+  const devServer = require('./utils/devServer');
   devServer(app);
 }
 
