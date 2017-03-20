@@ -1,6 +1,9 @@
 const GraphQLJSON = require('graphql-type-json');
 const Datastore = require('@google-cloud/datastore');
 
+const Project = require('../models/Project');
+const Page = require('../models/Page');
+
 const datastore = Datastore({ projectId: 'dragon-drop-graphql' });
 
 module.exports = {
@@ -9,56 +12,37 @@ module.exports = {
     pages(project) {
       const ancestorKey = datastore.key(['Project', project.id]);
       const query = datastore.createQuery('Page').hasAncestor(ancestorKey);
-      return datastore.runQuery(query).then(resp => resp[0]).then(pages => pages.map(p => {
-        const key = p[datastore.KEY];
-        p.id = `${key.parent.name}@${key.name}`;
-        return p;
-      }));
+      return datastore.runQuery(query).then(resp => resp[0]).then(pages => pages.map(p => Page(p)));
     }
   },
   Query: {
     projects() {
       const query = datastore.createQuery('Project');
-      return datastore.runQuery(query).then(resp => resp[0]).then(projects => projects.map(p => {
-        p.id = p[datastore.KEY].id || p[datastore.KEY].name;
-        return p;
-      }));
+      return datastore.runQuery(query).then(resp => resp[0]).then(projects => projects.map(p => Project(p)));
     },
     project(_, args) {
       const key = datastore.key(['Project', args.id]);
-      return datastore.get(key).then(p => p[0]).then(p => {
-        if (!p) return null;
-        p.id = p[datastore.KEY].name;
-        return p;
-      });
+      return datastore.get(key).then(p => p[0]).then(p => Project(p));
     },
     page(_, args) {
       const split = args.id.split('@');
-      const key =datastore.key(['Project', split[0], 'Page', split[1]]);
-      return datastore.get(key).then(p => p[0]).then(p => {
-        const keyid = p[datastore.KEY];
-        p.id = `${keyid.parent.name}@${keyid.name}`;
-        return p;
-      });
+      const key = datastore.key(['Project', split[0], 'Page', split[1]]);
+      return datastore.get(key).then(p => p[0]).then(p => Page(p));
     }
   },
   Mutation: {
     createProject(_, args) {
-      const id = args.project.id;
-      delete args.project.id;
-      const project = {
-        key: datastore.key(['Project', id]),
-        data: args.project
-      };
-      return datastore.save(project).then(() => Object.assign({}, project.data, { id: id }));
+      return Project(args.project).save();
     },
     createPage(_, args) {
-      const page = {
-        key: datastore.key(['Project', args.projectId, 'Page', args.page.path]),
-        data: args.page
-      };
-      page.data.items = page.data.items || { root: { id: 'root', type: 'div', props: {}, children: [] } };
-      return datastore.save(page).then(() => Object.assign({}, page.data, { id: `${args.projectId}@${page.key.name}` }));
+      args.page.items = args.page.items || { root: { id: 'root', type: 'div', props: {}, children: [] } };
+      return Page(args.page, args.projectId).save();
+      // const page = {
+      //   key: datastore.key(['Project', args.projectId, 'Page', args.page.path]),
+      //   data: args.page
+      // };
+      // page.data.items = page.data.items || { root: { id: 'root', type: 'div', props: {}, children: [] } };
+      // return datastore.save(page).then(() => Object.assign({}, page.data, { id: `${args.projectId}@${page.key.name}` }));
     },
     updatePage(_, args) {
       const id = args.page.id;

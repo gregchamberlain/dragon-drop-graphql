@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack --config webpack.config.prod.js --progress --colors",
-    "deploy": "echo 'Not implemented yet'"
+    "deploy": "yarn build && gsutil rsync -d dist gs://dragon-drop-graphql-cdn"
   },
   "dependencies": {
     "react": "^15.4.2",
