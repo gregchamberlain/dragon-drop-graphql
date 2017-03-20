@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "build": "webpack --config utils/webpack.config.prod.js --progress --colors"
   },
   "dependencies": {
     "@google-cloud/datastore": "^0.7.1",

@@ -13,8 +13,8 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-if (process.env.NODE_END === 'production') {
-  app.use('/static', express.static('/static'));
+if (process.env.NODE_ENV === 'production') {
+  app.use('/static', express.static(path.join(__dirname, 'static')));
 } else {
   devServer(app);
 }
