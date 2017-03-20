@@ -13,10 +13,16 @@
   },
   "dependencies": {
     "apollo-client": "^1.0.0-rc.5",
+    "css-loader": "^0.27.3",
     "graphql-tag": "^1.3.1",
+    "immutability-helper": "^2.1.2",
     "react": "^15.4.2",
     "react-apollo": "^1.0.0-rc.3",
     "react-dom": "^15.4.2",
-    "react-router-dom": "^4.0.0"
+    "react-layout-core": "^0.2.0",
+    "react-layout-plugin-dnd": "^0.1.3",
+    "react-layout-plugin-edit": "^0.1.0",
+    "react-router-dom": "^4.0.0",
+    "style-loader": "^0.14.1"
   }
 }

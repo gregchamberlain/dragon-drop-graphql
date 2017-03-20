@@ -1,12 +1,24 @@
 import React from 'react';
-import ApolloClient from 'apollo-client';
+import ApolloClient, { toIdValue } from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import { HashRouter as Router } from 'react-router-dom';
 
 import App from './App';
 
+const dataIdFromObject = o => {
+  if (o.id && o.__typename) {
+    return o.__typename + o.id;
+  }
+  return null;
+};
+
 const client = new ApolloClient({
-  dataIdFromObject: o => o.id
+  dataIdFromObject,
+  customResolvers: {
+    Query: {
+      page: (_, args) => toIdValue(dataIdFromObject({ __typename: 'Page', id: args['id'] })),
+    },
+  },
 });
 
 const Root = () => (

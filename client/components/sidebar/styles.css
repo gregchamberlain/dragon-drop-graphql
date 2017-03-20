@@ -1,0 +1,24 @@
+:local .layout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+}
+
+:local .sidebar {
+  width: 200px;
+  height: 100%;
+  background-color: #aaa;
+}
+
+:local .link {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+:local .active {
+  color: #35b5e5;
+}
