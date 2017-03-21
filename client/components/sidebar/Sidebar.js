@@ -11,7 +11,7 @@ const Sidebar = ({ match, pages }) => (
       {pages.map(page => (
         <li key={page.id}>
           <NavLink
-            to={`${match.url}/pages${page.path}`}
+            to={`${match.url}/pages/${page.id}`}
             exact
             className={styles.link}
             activeClassName={styles.active}

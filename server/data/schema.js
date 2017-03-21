@@ -36,12 +36,12 @@ input PageInput {
 type Query {
   projects: [Project]
   project(id: String!): Project
-  page(id: String!): Page
+  page(projectId: String!, id: String!): Page
 }
 
 type Mutation {
   createProject(project: ProjectInput!): Project
   createPage(projectId: String!, page: PageInput!): Page
-  updatePage(page: PageInput): Page
+  updatePage(projectId: String!, page: PageInput!): Page
 }
 `;

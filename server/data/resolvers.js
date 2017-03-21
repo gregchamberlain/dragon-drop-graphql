@@ -25,9 +25,9 @@ module.exports = {
       return datastore.get(key).then(p => p[0]).then(p => Project(p));
     },
     page(_, args) {
-      const split = args.id.split('@');
-      const key = datastore.key(['Project', split[0], 'Page', split[1]]);
-      return datastore.get(key).then(p => p[0]).then(p => Page(p));
+      return Page({ id: args.id }, args.projectId).get();
+      // const key = datastore.key(['Project', args.projectId, 'Page', args.id]);
+      // return datastore.get(key).then(p => p[0]).then(p => Page(p));
     }
   },
   Mutation: {
@@ -35,7 +35,6 @@ module.exports = {
       return Project(args.project).save();
     },
     createPage(_, args) {
-      args.page.items = args.page.items || { root: { id: 'root', type: 'div', props: {}, children: [] } };
       return Page(args.page, args.projectId).save();
       // const page = {
       //   key: datastore.key(['Project', args.projectId, 'Page', args.page.path]),
@@ -45,15 +44,16 @@ module.exports = {
       // return datastore.save(page).then(() => Object.assign({}, page.data, { id: `${args.projectId}@${page.key.name}` }));
     },
     updatePage(_, args) {
-      const id = args.page.id;
-      const split = id.split('@');
-      const key = datastore.key(['Project', split[0], 'Page', split[1]]);
-      delete args.page.id;
-      const page = {
-        key: key,
-        data: args.page
-      };
-      return datastore.save(page).then(() => Object.assign({}, page.data, { id: id }));
+      return Page(args.page, args.projectId).save();
+      // const id = args.page.id;
+      // const split = id.split('@');
+      // const key = datastore.key(['Project', split[0], 'Page', split[1]]);
+      // delete args.page.id;
+      // const page = {
+      //   key: key,
+      //   data: args.page
+      // };
+      // return datastore.save(page).then(() => Object.assign({}, page.data, { id: id }));
     }
   }
 };

@@ -10,8 +10,8 @@ const Editor = ({ data, updatePage }) => data.loading ? <LoadingPage /> : (
   <LayoutEditor items={data.page.items} update={updatePage} />
 );
 
-const query = gql`query Page($id: String!) {
-  page(id: $id) {
+const query = gql`query Page($projectId: String!, $id: String!) {
+  page(projectId: $projectId, id: $id) {
     id
     title
     path
@@ -19,8 +19,8 @@ const query = gql`query Page($id: String!) {
   }
 }`;
 
-const mutation = gql`mutation UpdatePage($page: PageInput!) {
-  updatePage(page: $page) {
+const mutation = gql`mutation UpdatePage($projectId: String!, $page: PageInput!) {
+  updatePage(projectId: $projectId, page: $page) {
     id
     title
     path
@@ -30,12 +30,12 @@ const mutation = gql`mutation UpdatePage($page: PageInput!) {
 
 export default compose(
   graphql(query, {
-    options: ({ match }) => ({ variables: { id: `${match.params.projectId}@/${match.params.pageId || ''}` } }),
+    options: ({ match }) => ({ variables: { projectId: match.params.projectId, id: match.params.pageId } }),
   }),
   graphql(mutation, {
     props: ({ ownProps, mutate }) => ({
       updatePage: (items) => mutate({
-        variables: { page: Object.assign({}, ownProps.data.page, { items, __typename: undefined }) },
+        variables: { projectId: ownProps.match.params.projectId, page: Object.assign({}, ownProps.data.page, { items, __typename: undefined }) },
         updateQueries: {
         Project: (prev, { mutationResult }) => {
           const newPage = mutationResult.data.updatePage;
