@@ -43,5 +43,6 @@ type Mutation {
   createProject(project: ProjectInput!): Project
   createPage(projectId: String!, page: PageInput!): Page
   updatePage(projectId: String!, page: PageInput!): Page
+  deployProject(projectId: String!): String
 }
 `;

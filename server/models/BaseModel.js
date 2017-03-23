@@ -4,7 +4,7 @@ const datastore = Datastore({ projectId: 'dragon-drop-graphql' });
 
 class BaseModel {
 
-  constructor(modelName, attributes, data) {
+  constructor(modelName, attributes, data = {}) {
     attributes.forEach(key => {
       this[key] = data[key];
     });
@@ -12,6 +12,35 @@ class BaseModel {
     this._attributes = attributes;
     this._datastore = datastore;
     this._key = data[datastore.KEY];
+  }
+
+  create() {
+    const transaction = datastore.transaction();
+    let item;
+    const newItem = {
+      key: this.getKey(),
+      data: this.getData()
+    };
+    return transaction.run()
+      .then(() => transaction.get(this.getKey()))
+      .then(result => {
+        item = result[0];
+        if (item) {
+          return transaction.rollback();
+        } else {
+          transaction.save({
+            key: this.getKey(),
+            data: this.getData()
+          });
+          return transaction.commit();
+        }
+      }).then(() => {
+        if (item) {
+          throw new Error(`${this._modelName} with that id already exists`);
+        } else {
+          return this;
+        }
+      });
   }
 
   save() {
@@ -30,6 +59,19 @@ class BaseModel {
 
   get() {
     return datastore.get(this.getKey()).then(p => p[0] && new this.constructor(p[0]));
+  }
+
+  json() {
+    const result = {};
+    this._attributes.forEach(attr => {
+      result[attr] = this[attr];
+    });
+    return result;
+  }
+
+  query() {
+    const query = datastore.createQuery(this._modelName);
+    return datastore.runQuery(query).then(r => r[0].map(p => new this.constructor(p)));
   }
 
   get id() {
