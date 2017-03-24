@@ -57,8 +57,24 @@ class Project extends BaseModel {
     ]).then(response => {
       const project = response[0].json();
       project.pages = response[1].map(page => page.json());
-      console.log(project);
-      return 'success';
+      const data = { project: project };
+      const str = `window.__PROJECT_DATA__ = ${JSON.stringify(data)}`;
+      const bucket = gcs.bucket(`${this.id}.dragon-drop.com`);
+      return bucket.file('data.js').save(str).then(() => {
+        console.log('data file written!');
+        return 'success';
+      });
+    });
+  }
+
+  dataFile() {
+    return Promise.all([
+      this.get(),
+      this.pages
+    ]).then(response => {
+      const project = response[0].json();
+      project.pages = response[1].map(page => page.json());
+      return `window.__PROJECT_DATA__ = ${JSON.stringify({ project: project })}`;
     });
   }
   

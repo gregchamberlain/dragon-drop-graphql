@@ -3,9 +3,10 @@ import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Page from './Page';
 
-const pages = window.__PROJECT_DATA__.project.pages;
+const project = window.__PROJECT_DATA__.project;
+const pages = project.pages;
 
-const App = () => pages.length ? (
+const App = () => pages && pages.length ? (
   <Router>
     <div>
       {pages.map(page => (

@@ -14,8 +14,8 @@ module.exports = {
     page: (_, args) =>  Page({ id: args.id }, args.projectId).get(),
   },
   Mutation: {
-    createProject: (_, args) => Project(args.project).save(),
-    createPage: (_, args) => Page(args.page, args.projectId).save(),
+    createProject: (_, args) => Project(args.project).create(),
+    createPage: (_, args) => Page(args.page, args.projectId).create(),
     updatePage: (_, args) => Page(args.page, args.projectId).save(),
     deployProject: (_, args) => Project({ id: args.projectId }).deploy()
   }

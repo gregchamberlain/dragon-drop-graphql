@@ -18,7 +18,11 @@ class Page extends BaseModel {
   }
 
   getKey() {
-    return super.getKey(['Project', this.projectId, 'Page', this.id && parseInt(this.id)]);
+    if (this.id) {
+      return super.getKey(['Project', this.projectId, 'Page', parseInt(this.id)]);
+    } else {
+      return super.getKey(['Project', this.projectId, 'Page']);
+    }
   }
   
 }

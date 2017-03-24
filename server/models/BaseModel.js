@@ -22,7 +22,7 @@ class BaseModel {
       data: this.getData()
     };
     return transaction.run()
-      .then(() => transaction.get(this.getKey()))
+      .then(() => (newItem.key.id || newItem.key.name) ? transaction.get(this.getKey()) : [])
       .then(result => {
         item = result[0];
         if (item) {
