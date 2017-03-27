@@ -13,10 +13,10 @@ const mutation = gql`mutation DeployProject($projectId: String!) {
 }
 `;
 
-export default withRouter(graphql(mutation, {
+export default graphql(mutation, {
   props: ({ ownProps, mutate }) => ({
     deploy: (page) => mutate({
-      variables: { projectId: ownProps.match.params.projectId },
+      variables: { projectId: ownProps.projectId },
     })
   })
-})(DeployButton));
+})(DeployButton);

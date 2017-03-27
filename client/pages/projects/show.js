@@ -18,7 +18,7 @@ const Project = ({ match, data }) => data.loading ? <LoadingPage /> : (
         <Sidebar pages={data.project.pages} />
         <Content>
           <Route exact path={match.path} component={(props) => <h1>{props.match.params.projectId}</h1>} />
-          <Route path={match.path} component={DeployButton} />
+          <Route path={match.path} component={() => <DeployButton  projectId={match.params.projectId} />} />
           <Route path={`${match.path}/new-page`} component={PageForm}/>
           <Route path={`${match.path}/pages/:pageId`} component={LayoutEditor} />
           <Route exact path={`${match.path}/pages/`} component={LayoutEditor} />
